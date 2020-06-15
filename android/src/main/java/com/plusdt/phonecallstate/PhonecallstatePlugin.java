@@ -26,10 +26,10 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  */
 public class PhonecallstatePlugin implements MethodCallHandler {
   private final MethodChannel channel;
-//  private Activity activity;
+  private Activity activity;
   private static final String TAG = "KORDON";//MyClass.class.getSimpleName();
 
-//  TelephonyManager tm;
+  TelephonyManager tm;
 
   //private PhoneStateListener mPhoneListener;
 
@@ -38,18 +38,17 @@ public class PhonecallstatePlugin implements MethodCallHandler {
    */
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "com.plusdt.phonecallstate");
-    channel.setMethodCallHandler(new PhonecallstatePlugin(registrar.context(),registrar.activity(), channel));
+    channel.setMethodCallHandler(new PhonecallstatePlugin(registrar.activity(), channel));
   }
 
 
 
-  PhonecallstatePlugin(Context context,Activity activity, MethodChannel channel) {
-//    this.activity = activity;
+  PhonecallstatePlugin(Activity activity, MethodChannel channel) {
+    this.activity = activity;
     this.channel = channel;
     this.channel.setMethodCallHandler(this);
 
-    TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-//    TelephonyManager tm = (TelephonyManager) this.activity.getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) this.activity.getSystemService(Context.TELEPHONY_SERVICE);
     tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 
   }
